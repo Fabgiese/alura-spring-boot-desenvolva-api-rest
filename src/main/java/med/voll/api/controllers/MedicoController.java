@@ -9,7 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("medicos")
@@ -18,10 +18,15 @@ public class MedicoController {
     @Autowired
     private MedicoRepository repository;
 
+    private final String PATH_204_CREATED_URI = "/medicos/{id}";
+
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestBody @Valid DadosCadastroMedico json) {
-        repository.save(new Medico(json));
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroMedico json, UriComponentsBuilder uriBuilder) {
+        var medico = new Medico(json);
+        repository.save(medico);
+        var uri = uriBuilder.path(PATH_204_CREATED_URI).buildAndExpand(medico.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));
     }
 
     @GetMapping
@@ -44,5 +49,11 @@ public class MedicoController {
         var medico = repository.getReferenceById(id);
         medico.excluir();
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id) {
+        var medico = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
     }
 }
