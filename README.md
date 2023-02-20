@@ -1,6 +1,10 @@
 # Alura
 ## Spring Boot: Desenvolva uma API Rest em java
-### Dependências
+### Tecnologias e modulos
 * Spring Web
 * Spring Dev Tools
 * Lombok
+* Flyway
+* Spring Data JPA
+* MYSQL
+* Spring Validation
