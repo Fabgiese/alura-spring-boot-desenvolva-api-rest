@@ -8,3 +8,5 @@
 * Spring Data JPA
 * MYSQL
 * Spring Validation
+* Spring Security
+* Auth0
