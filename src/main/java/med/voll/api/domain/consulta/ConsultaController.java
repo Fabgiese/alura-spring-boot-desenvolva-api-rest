@@ -1,6 +1,7 @@
 package med.voll.api.domain.consulta;
 
 import jakarta.validation.Valid;
+import med.voll.api.domain.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,7 @@ public class ConsultaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsulta dadosAgendamentoConsulta) {
+    public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsulta dadosAgendamentoConsulta) throws ValidacaoException {
         agenda.agendar(dadosAgendamentoConsulta);
         return ResponseEntity.ok(new DadosDetalhamentoConsulta(null, null, null, null));
     }
